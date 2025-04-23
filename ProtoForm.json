@@ -55,3 +55,60 @@
     }
   }
   
+{
+    "activeSection": "Job Information",
+    "sections": [
+      "Job Information",
+      "Account Information (Bill to)",
+      "Job Location & Account Contacts",
+      "Equipment Information",
+      "Required Maintenance and Repairs",
+      "Work Performed",
+      "Materials",
+      "Labor",
+      "Summary of Charges",
+      "Terms and Signature"
+    ],
+    "jobInformation": {
+      "fields": [
+        {
+          "label": "Select Type",
+          "type": "radio",
+          "name": "type",
+          "options": ["Warranty", "Time & Material", "Overtime", "Other"],
+          "value": "Time & Material"
+        },
+        {
+          "label": "Work Order #",
+          "type": "text",
+          "name": "workOrderNumber",
+          "value": "34678"
+        },
+        {
+          "label": "P.O. #",
+          "type": "text",
+          "name": "poNumber",
+          "value": ""
+        },
+        {
+          "label": "Order Received by",
+          "type": "text",
+          "name": "orderReceivedBy",
+          "value": "Wally O'Connor"
+        },
+        {
+          "label": "Work to be performed",
+          "type": "multiline",
+          "name": "workToBePerformed",
+          "value": ""
+        },
+        {
+          "label": "Picture of work to be performed",
+          "type": "image",
+          "name": "picture",
+          "value": null
+        }
+      ]
+    }
+  }
+  
