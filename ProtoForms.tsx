@@ -86,7 +86,7 @@ const ProtoForms = () => {
       formState.activeSection.charAt(0).toLowerCase() +
       formState.activeSection.replace(/\s+/g, '').slice(1);
     const section = (formState as any)[sectionKey];
-    if (!section || !section.fields) return null;
+    if (!section || !section.fields) return (<Text>{formState.activeSection}</Text>);
 
     return (
       <ScrollView contentContainerStyle={styles.formContent}>
