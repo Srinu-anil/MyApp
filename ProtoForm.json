@@ -3,14 +3,14 @@
   "sections": [
     "Job Information",
     "Account Information (Bill to)",
-    "Job Location & Account Contacts",
-    "Equipment Information",
-    "Required Maintenance and Repairs",
-    "Work Performed",
-    "Materials",
-    "Labor",
-    "Summary of Charges",
-    "Terms and Signature"
+    "Job Location & Account Contacts"//,
+    // "Equipment Information",
+    // "Required Maintenance and Repairs",
+    // "Work Performed",
+    // "Materials",
+    // "Labor",
+    // "Summary of Charges",
+    // "Terms and Signature"
   ],
   "jobInformation": {
     "fields": [

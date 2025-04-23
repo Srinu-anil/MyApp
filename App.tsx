@@ -1,4 +1,4 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState, useCallback} from 'react';
@@ -14,50 +14,41 @@ const Stack =
     : createNativeStackNavigator();
 import {Provider} from 'react-redux';
 import {persistor, store} from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import {PersistGate} from 'redux-persist/integration/react';
+import LoginScreen from './LoginScreen';
+import { useDispatch } from 'react-redux';
+import { logout } from './redux/formSlice';
 
-export const Screen1 = ({
-  navigation,
-  route,
-}: StackScreenProps<any, 'Screen1'>) => {
-  return (
-    <View style={styles.screens}>
-      <Button
-        style={styles.navButtons}
-        title="Click me to go to screen 2!"
-        onPress={() => navigation.navigate('Screen2')}
-      />
-    </View>
-  );
-};
+function LogoutButton() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-export const Screen2 = ({
-  navigation,
-  route,
-}: StackScreenProps<any, 'Screen2'>) => {
-  return (
-    <View style={styles.screens}>
-      <Button
-        style={styles.navButtons}
-        title="Click me to go to screen 1!"
-        onPress={() => navigation.navigate('Screen1')}
-      />
-    </View>
-  );
-};
+  const handleLogout = () => {
+    dispatch(logout());
+    persistor.purge();
+    navigation.navigate('LoginScreen');
+  };
+
+  return <Button title="Logout" onPress={handleLogout} />;
+}
 
 const App = () => {
   return (
     <Provider store={store}>
-     <PersistGate loading={null} persistor={persistor}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerMode: 'screen'}}>
-          {/* <Stack.Screen name="CreateForm" component={CreateForm} /> */}
-          <Stack.Screen name="NewPage" component={NewPage} />
-          <Stack.Screen name="AddQuestionType" component={AddQuestionType} />
-          <Stack.Screen name="ProtoForms" component={ProtoForms} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerMode: 'screen',
+              headerRight: () => <LogoutButton />,
+            }}>
+            {/* <Stack.Screen name="CreateForm" component={CreateForm} /> */}
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="NewPage" component={NewPage} />
+            <Stack.Screen name="AddQuestionType" component={AddQuestionType} />
+            <Stack.Screen name="ProtoForms" component={ProtoForms} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </PersistGate>
     </Provider>
   );

@@ -21,7 +21,7 @@ type Field = {
 };
 
 const ProtoForms = () => {
-  const formState = useSelector((state: RootState) => state);
+  const formState = useSelector((state: RootState) => state).data;
   const dispatch = useDispatch();
 
   const handleChange = (name: string, value: string) => {
