@@ -1,131 +1,72 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useState, useCallback} from 'react';
+import {StyleSheet, View, Platform} from 'react-native';
+import {Button} from 'react-native';
+import CreateForm from './CreateForm';
+import NewPage from './NewPage';
+import AddQuestionType from './AddQuestionType';
+import ProtoForms from './ProtoForms';
+const Stack =
+  Platform.OS === 'windows'
+    ? createStackNavigator()
+    : createNativeStackNavigator();
+import {Provider} from 'react-redux';
+import {persistor, store} from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export const Screen1 = ({
+  navigation,
+  route,
+}: StackScreenProps<any, 'Screen1'>) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.screens}>
+      <Button
+        style={styles.navButtons}
+        title="Click me to go to screen 2!"
+        onPress={() => navigation.navigate('Screen2')}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
     </View>
   );
-}
+};
+
+export const Screen2 = ({
+  navigation,
+  route,
+}: StackScreenProps<any, 'Screen2'>) => {
+  return (
+    <View style={styles.screens}>
+      <Button
+        style={styles.navButtons}
+        title="Click me to go to screen 1!"
+        onPress={() => navigation.navigate('Screen1')}
+      />
+    </View>
+  );
+};
+
+const App = () => {
+  return (
+    <Provider store={store}>
+     <PersistGate loading={null} persistor={persistor}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerMode: 'screen'}}>
+          {/* <Stack.Screen name="CreateForm" component={CreateForm} /> */}
+          <Stack.Screen name="NewPage" component={NewPage} />
+          <Stack.Screen name="AddQuestionType" component={AddQuestionType} />
+          <Stack.Screen name="ProtoForms" component={ProtoForms} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      </PersistGate>
+    </Provider>
+  );
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  screens: {flex: 1, alignItems: 'center'},
+  navButtons: {height: 100, width: 250, color: 'white'},
+  doIWorkButton: {},
 });
 
 export default App;
