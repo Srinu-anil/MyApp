@@ -28,6 +28,7 @@ import {
 import {unlink} from '@dr.pogodin/react-native-fs';
 import {type PlatformOSType} from 'react-native';
 // import Pdf from 'react-native-pdf';
+import {WebView} from 'react-native-webview';
 
 type Field = {
   label: string;
@@ -40,7 +41,7 @@ type Field = {
 const ProtoForms = () => {
   const formState = useSelector((state: RootState) => state).data;
   const dispatch = useDispatch();
-  const [urlSource, setUrlSource] = useState({uri: '', cache: false});
+  const [urlSource, setUrlSource] = useState({uri: ''});
 
   const handleChange = (name: string, value: string) => {
     console.log('form state ', formState);
@@ -96,8 +97,7 @@ const ProtoForms = () => {
       RoamingDirectoryPath + SEPARATOR + path.join(SEPARATOR) + '.pdf';
     const SEPARATOR = Platform.OS === 'windows' ? '\\' : '/';
     const url = apiUrl;
-    const path = PATH('downloadFile-1');
-    setUrlSource({uri: path, cache: true});
+    const path = PATH('downloadFile');
     await tryUnlink(path);
     try {
       // execute
@@ -119,8 +119,7 @@ const ProtoForms = () => {
         return Result.error(`statusCode ${res.statusCode} !== 200`);
       }
 
-      const file = await readFile(path);
-      if (file !== CONTENT) return Result.error(`${file} !== ${CONTENT}`);
+      setUrlSource({uri: path});
       return Result.success();
     } catch (e) {
       return Result.catch(e);
@@ -204,22 +203,7 @@ const ProtoForms = () => {
         ))}
         <Button title="Download PDF" onPress={handlepdfDownload} />
 
-        {/* <Pdf
-          source={urlSource}
-          onLoadComplete={(numberOfPages, filePath) => {
-            console.log(`Number of pages: ${numberOfPages}`);
-          }}
-          onPageChanged={(page, numberOfPages) => {
-            console.log(`Current page: ${page}`);
-          }}
-          onError={error => {
-            console.log(error);
-          }}
-          onPressLink={uri => {
-            console.log(`Link pressed: ${uri}`);
-          }}
-          style={styles.pdf}
-        /> */}
+        {/* <WebView source={urlSource} style={styles.webview} /> */}
       </ScrollView>
     );
   };
@@ -308,6 +292,12 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 15,
     fontSize: 16,
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: '#0078D4',
+    height: 500,
+    width:500,
   },
   input: {
     borderWidth: 1,
