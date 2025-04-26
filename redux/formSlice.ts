@@ -3,13 +3,17 @@ import formData from '../ProtoForm.json';
 
 const formSlice = createSlice({
   name: 'form',
-  initialState: {data: formData, user: null, password: null},
+  initialState: {data: null, user: null, password: null},
   reducers: {
+    formResponse: (state, action) => {
+      state.data = state.data ? state.data : action.payload;
+      console.log('data ', state.data);
+    },
     loginSuccess: (state, action) => {
       state.user = action.payload.user;
       state.password = action.payload.password;
     },
-    logout: state => {
+    logout: () => {
       return {data: formData, user: null, password: null};
     },
     setFieldValue: (
@@ -35,6 +39,11 @@ const sectionKey = (title: string) => {
   return title.charAt(0).toLowerCase() + title.replace(/\s+/g, '').slice(1);
 };
 
-export const {setFieldValue, setActiveSection, loginSuccess, logout} =
-  formSlice.actions;
+export const {
+  setFieldValue,
+  setActiveSection,
+  loginSuccess,
+  logout,
+  formResponse,
+} = formSlice.actions;
 export default formSlice.reducer;
